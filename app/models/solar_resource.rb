@@ -8,7 +8,7 @@ class SolarResource
       data_format = "json"
 
       # use figaro
-      api_key = "my little secret"
+      api_key = ENV['nrel_api_key']
 
       # uses Google's geocoding service
       address = "Pittsburgh, PA"
