@@ -1,49 +1,48 @@
 class SolarResource
-  def self.gimme
-    # establish connection
+  def self.data(address)
     connection = Hurley::Client.new "https://developer.nrel.gov"
+    data_format = "json"
+    api_key = ENV['nrel_api_key']
 
-    # set parameters
-      # json / xml
-      data_format = "json"
-
-      # use figaro
-      api_key = ENV['nrel_api_key']
-
-      # uses Google's geocoding service
-      address = "Pittsburgh, PA"
-
-    # write request
     request = "/api/solar/solar_resource/v1.#{data_format}?&api_key=#{api_key}&address=#{address}"
 
-    # send request / get response
     response = connection.get(request)
 
-    # parse response
     data = parse(response.body)
-    # get_solar_data(data)
+    format_data(data[:outputs])
   end
 
   private
+
     def self.parse(body)
       JSON.parse(body, symbolize_names: true)
     end
 
-    def self.get_solar_data(data)
-      solar_data = {}
-
-      # Average Direct Normal Irradiance
-      solar_data[:avg_annual_dni] = data[:outputs][:avg_dni][:annual]
-      solar_data[:avg_monthly_dni] = data[:outputs][:avg_dni][:monthly]
-
-      # Average Global Horizontal Irradiance
-      solar_data[:avg_annual_ghi] = data[:outputs][:avg_ghi][:annual]
-      solar_data[:avg_monthly_ghi] = data[:outputs][:avg_ghi][:monthly]
-
-      # Average Tilt at Latitude
-      solar_data[:avg_annual_lat_tilt] = data[:outputs][:avg_lat_tilt][:annual]
-      solar_data[:avg_monthly_lat_tilt] = data[:outputs][:avg_lat_tilt][:monthly]
-
+    def self.format_data(data)
+      solar_data = data.reduce({}) do |solar_data, (var, value)|
+        solar_data[variables_map.fetch(var)] = {
+          "Annual" => value[:annual],
+          "Monthly" => format_months(value[:monthly])
+        }
+        solar_data
+      end
       solar_data
+    end
+
+    def self.format_months(data)
+      data.map { |month, value| [month.to_s.capitalize, value] }.to_h
+    end
+
+    # { Average Direct Normal Irradiance => { "Annual" => 5.31 ,
+    #                                         "Monthly" => { jan => 0.1,
+    #                                                        feb => 0.2 ...}}
+    #  Average Global Horizontal Irradiance => ...}
+
+    def self.variables_map
+      {
+        avg_dni: "Average Direct Normal Irradiance",
+        avg_ghi: "Average Global Horizontal Irradiance",
+        avg_lat_tilt: "Average Tilt at Latitute"
+      }
     end
 end

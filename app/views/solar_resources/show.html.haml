@@ -1,15 +1,15 @@
-%h1=@resource[:inputs][:address]
+%h1=@address
 
-- @resource[:outputs].each do |data_type, time_frames|
-  %strong=data_type.upcase
+- @resource.each do |var, time_frames|
+  %strong=var
   %table
     %th Annual
     %tr
       %td
-        = time_frames[:annual]
+        = time_frames["Annual"]
 
     %th Monthly
-    - time_frames[:monthly].each do |month, data|
+    - time_frames["Monthly"].each do |month, data|
       %tr
-        %td= "#{month.capitalize}: #{data}"
+        %td= "#{month}: #{data}"
   %br
