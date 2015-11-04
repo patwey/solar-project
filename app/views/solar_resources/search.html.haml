@@ -1,5 +1,10 @@
-= form_for(:solar_resource, url: "location", method: :post) do |f|
-  = f.label :address
-  = f.text_field :address
-  %br
-  = f.submit 'Retrieve Data'
+.container
+  %h2{class:'center-align'}
+    Solar Resource Data
+
+  %div{class:'center-align container'}
+    = form_for(:solar_resource, url: "location", method: :post) do |f|
+      .container
+        -# = f.label :address
+        = f.text_field :address, placeholder: 'Location', id:'address'
+        = f.submit 'Retrieve Data', class: 'waves-effect waves-light black btn'

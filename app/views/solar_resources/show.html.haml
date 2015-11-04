@@ -1,15 +1,31 @@
-%h1=@address
+.container
+  .center-align
+    %h2=@address
 
-- @resource.each do |var, time_frames|
-  %strong=var
-  %table
-    %th Annual
-    %tr
-      %td
-        = time_frames["Annual"]
+    = image_tag 'ic_brightness_high_black_48px.svg'
 
-    %th Monthly
-    - time_frames["Monthly"].each do |month, data|
-      %tr
-        %td= "#{month}: #{data}"
-  %br
+  .row
+    - @resource.each do |var, time_frames|
+
+      %div{class:'col s4'}
+
+        %p.center-align
+          %i=var
+
+        %table{class:'container centered highlight'}
+          %thead
+            %tr
+              %th Annual
+          %tbody
+            %tr
+              %td= time_frames["Annual"]
+
+          %table{class:'container centered highlight'}
+            %thead
+              %tr
+                %th{colspan:'2'} Monthly
+            %tbody
+              - time_frames["Monthly"].each do |month, data|
+                %tr
+                  %td= "#{month}"
+                  %td= "#{data}"
