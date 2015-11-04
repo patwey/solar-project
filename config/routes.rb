@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  resource :solar_resources, only: [:index]
-  root to: 'solar_resources#index'
+  root to: 'solar_resources#search'
+
+  post '/location', to: "solar_resources#show"
 end

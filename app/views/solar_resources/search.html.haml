@@ -1,0 +1,5 @@
+= form_for(:solar_resource, url: "location", method: :post) do |f|
+  = f.label :address
+  = f.text_field :address
+  %br
+  = f.submit 'Retrieve Data'
