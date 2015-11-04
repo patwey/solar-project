@@ -1,6 +1,5 @@
 class SolarResourcesController < ApplicationController
   def search
-
   end
 
   def show
