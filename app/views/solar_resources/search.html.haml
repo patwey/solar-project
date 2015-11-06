@@ -4,7 +4,7 @@
 
   %div{class:'center-align container'}
     = form_for(:solar_resource, url: "location", method: :post) do |f|
-      .container
+      %div{class:'container', id:'search'}
         -# = f.label :address
         = f.text_field :address, placeholder: 'Location', id:'address'
         = f.submit 'Retrieve Data', class: 'waves-effect waves-light black btn'

@@ -33,11 +33,6 @@ class SolarResource
       data.map { |month, value| [month.to_s.capitalize, value] }.to_h
     end
 
-    # { Average Direct Normal Irradiance => { "Annual" => 5.31 ,
-    #                                         "Monthly" => { jan => 0.1,
-    #                                                        feb => 0.2 ...}}
-    #  Average Global Horizontal Irradiance => ...}
-
     def self.variables_map
       {
         avg_dni: "Average Direct Normal Irradiance",
